@@ -24,7 +24,9 @@ Rails.application.routes.draw do
 
   get '/admin/bike-shop', to: 'admin/bikeshops#index'
 
-  resources :users, only: [:new, :create, :show, :update, :edit] do
+  post '/users', to: 'users#create'
+
+  resources :users, only: [:new, :show, :update, :edit] do
     resources :orders, only: [:show, :create, :new]
   end
 
