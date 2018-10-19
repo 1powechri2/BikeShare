@@ -5,11 +5,13 @@ class Admin::StationsController < Admin::BaseController
   end
 
   def create
-    params[:station][:installation_date] = Date.strptime(params[:station][:installation_date], '%m/%d/%Y')
+    if params[:station][:installation_date] != ""
+      params[:station][:installation_date] = Date.strptime(params[:station][:installation_date], '%m/%d/%Y')
+    end
     @station = Station.create(station_params)
     if @station.save
       flash[:success] = "You have successfully created #{@station.name} station"
-      redirect_to station_path(@station.name)
+      redirect_to station_path(@station.slug)
     else
       flash[:notice] = "Station was not properly created"
       render :new
@@ -26,7 +28,7 @@ class Admin::StationsController < Admin::BaseController
     @station.update(station_params)
     if @station.save
       flash[:success] = "You have successfully updated #{@station.name} station"
-      redirect_to station_path(@station.name)
+      redirect_to station_path(@station.slug)
     else
       flash[:notice] = "Station was not properly updated"
       render :edit
